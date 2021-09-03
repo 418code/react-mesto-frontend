@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Switch, Route } from 'react-router-dom';
 import api  from '../utils/api';
 import Header from './Header';
 import Main from './Main';
@@ -129,14 +130,22 @@ export default function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page body__element">
           <Header />
-          <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}
-            cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
-          <Footer />
-          <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUserUpdate} isSaving={isPopupSaving} />
-          <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} isSaving={isPopupSaving} />
-          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleAvatarUpdate} isSaving={isPopupSaving} />
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-          <ConfirmDeletePopup isOpen={isConfirmDeletePopupOpen} onClose={closeAllPopups} onSubmit={handleConfirmDeleteSubmit} isSaving={isPopupSaving} />
+          <Switch>
+            <Route exact path="/">
+              <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}
+                cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
+              <Footer />
+              <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUserUpdate} isSaving={isPopupSaving} />
+              <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} isSaving={isPopupSaving} />
+              <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleAvatarUpdate} isSaving={isPopupSaving} />
+              <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+              <ConfirmDeletePopup isOpen={isConfirmDeletePopupOpen} onClose={closeAllPopups} onSubmit={handleConfirmDeleteSubmit} isSaving={isPopupSaving} />
+            </Route>
+            <Route path="/sign-up">
+            </Route>
+            <Route path="/sign-in">
+            </Route>
+          </Switch>
       </div>
     </CurrentUserContext.Provider>
   );
