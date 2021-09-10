@@ -11,6 +11,7 @@ import ConfirmDeletePopup from './ConfirmDeletePopup';
 import ImagePopup from './ImagePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Register from './Register';
+import Login from './Login';
 
 export default function App() {
 
@@ -146,6 +147,7 @@ export default function App() {
               <Register />
             </Route>
             <Route path="/sign-in">
+              <Login />
             </Route>
           </Switch>
       </div>

@@ -6,6 +6,7 @@ export default function Header() {
   const currentRouteElement = () => {
     switch (location.pathname) {
       case '/sign-up': return <Link to="/sign-in" className="page__link page__link_size_adaptive page__link_theme_black-box">Войти</Link>;
+      case '/sign-in': return <Link to="/sign-up" className="page__link page__link_size_adaptive page__link_theme_black-box">Регистрация</Link>;
       default:
     }
   };
