@@ -9,7 +9,7 @@ const popupConfig = {
   profileEditPopupAndFormName: 'edit-profile',
   cardConfirmDeletePopupAndFormName: 'confirm-delete',
   popupWithFormSavingText: 'Сохранение...',
-  enterScreenPopupAndFormName: 'entrance-form',
+  registerScreenPopupAndFormName: 'register-form',
   loginScreenPopupAndFormName: 'login-form',
   containerThemeEntrance: 'black-box',
 };

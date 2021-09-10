@@ -21,7 +21,7 @@ export default function Register(props) {
   }
 
   return (
-    <PopupWithForm name={popupConfig.enterScreenPopupAndFormName} formTitle="Регистрация" submitButtonText="Зарегистрироваться" isOpen={true}
+    <PopupWithForm name={popupConfig.registerScreenPopupAndFormName} formTitle="Регистрация" submitButtonText="Зарегистрироваться" isOpen={true}
       onSubmit={handleSubmit} isSaving={false} theme={popupConfig.containerThemeEntrance}>
       <input id="popup__register-email-input" type="email" name="registerEmail"
         className="popup__form-text popup__form-text_theme_black-box" placeholder="Email" minLength="3" maxLength="254" required="required" value={email}
