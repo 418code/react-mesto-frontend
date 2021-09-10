@@ -9,6 +9,8 @@ const popupConfig = {
   profileEditPopupAndFormName: 'edit-profile',
   cardConfirmDeletePopupAndFormName: 'confirm-delete',
   popupWithFormSavingText: 'Сохранение...',
+  enterScreenPopupAndFormName: 'entrance-form',
+  containerThemeEntrance: 'black-box',
 };
 
 const apiConfig = {

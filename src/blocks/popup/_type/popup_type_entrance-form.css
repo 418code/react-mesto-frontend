@@ -1,0 +1,11 @@
+.popup_type_entrance-form {
+  cursor: default;
+  position: static;
+  top: none;
+}
+
+@media (min-width: 530px) {
+  .popup_type_entrance-form {
+    padding-top: 24px;
+  }
+}

@@ -1,0 +1,11 @@
+.popup__form_theme_black-box {
+  width: 260px;
+  padding: 0;
+}
+
+@media (min-width: 530px) {
+  .popup__form_theme_black-box {
+    width: 358px;
+    padding: 0;
+  }
+}

@@ -1,7 +1,6 @@
 .header__logo {
   width: 103.74px;
   height: 24.4px;
-  padding-left: 27px;
 }
 
 @media (min-width: 425px) {
@@ -15,11 +14,5 @@
   .header__logo {
     width: 142px;
     height: 33px;
-  }
-}
-
-@media (min-width: 925px) {
-  .header__logo {
-    padding: 0;
   }
 }

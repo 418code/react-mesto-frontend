@@ -10,6 +10,7 @@ import AddPlacePopup from './AddPlacePopup';
 import ConfirmDeletePopup from './ConfirmDeletePopup';
 import ImagePopup from './ImagePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import Register from './Register';
 
 export default function App() {
 
@@ -142,6 +143,7 @@ export default function App() {
               <ConfirmDeletePopup isOpen={isConfirmDeletePopupOpen} onClose={closeAllPopups} onSubmit={handleConfirmDeleteSubmit} isSaving={isPopupSaving} />
             </Route>
             <Route path="/sign-up">
+              <Register />
             </Route>
             <Route path="/sign-in">
             </Route>
