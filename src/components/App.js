@@ -12,6 +12,7 @@ import ImagePopup from './ImagePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Register from './Register';
 import Login from './Login';
+import InfoTooltip from './InfoTooltip';
 
 export default function App() {
 
@@ -24,6 +25,7 @@ export default function App() {
   const [isPopupSaving, setIsPopupSaving] = useState(false);
   const [selectedCard, setSelectedCard] = useState(emptyCard);
   const [cardToDelete, setCardToDelete] = useState(emptyCard);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
 
   //context state variables
   const [currentUser, setCurrentUser] = useState({name: '', about: '', avatar: '', _id: '', cohort: ''});
@@ -36,6 +38,7 @@ export default function App() {
     setIsConfirmDeletePopupOpen(false);
     setSelectedCard(emptyCard);
     setCardToDelete(emptyCard);
+    setIsInfoTooltipOpen(false);
   };
 
   useEffect(() => {
@@ -142,9 +145,11 @@ export default function App() {
               <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleAvatarUpdate} isSaving={isPopupSaving} />
               <ImagePopup card={selectedCard} onClose={closeAllPopups} />
               <ConfirmDeletePopup isOpen={isConfirmDeletePopupOpen} onClose={closeAllPopups} onSubmit={handleConfirmDeleteSubmit} isSaving={isPopupSaving} />
+              <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} successful={true} />
             </Route>
             <Route path="/sign-up">
               <Register />
+              <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} successful={false} />
             </Route>
             <Route path="/sign-in">
               <Login />
