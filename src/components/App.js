@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import api  from '../utils/api';
 import Header from './Header';
 import Main from './Main';
@@ -13,6 +13,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Register from './Register';
 import Login from './Login';
 import InfoTooltip from './InfoTooltip';
+import ProtectedRoute from './ProtectedRoute';
 
 export default function App() {
 
@@ -26,6 +27,7 @@ export default function App() {
   const [selectedCard, setSelectedCard] = useState(emptyCard);
   const [cardToDelete, setCardToDelete] = useState(emptyCard);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [isInfoTooltipSuccessful, setIsInfoTooltipSuccessful] = useState(false);
 
   //context state variables
   const [currentUser, setCurrentUser] = useState({name: '', about: '', avatar: '', _id: '', cohort: ''});
@@ -134,27 +136,27 @@ export default function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page body__element">
-          <Header />
-          <Switch>
-            <Route exact path="/">
-              <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}
-                cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
+        <Header />
+        <Switch>
+          <ProtectedRoute exact path="/" render={() =>
+            <>
+              <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
               <Footer />
               <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUserUpdate} isSaving={isPopupSaving} />
               <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} isSaving={isPopupSaving} />
               <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleAvatarUpdate} isSaving={isPopupSaving} />
               <ImagePopup card={selectedCard} onClose={closeAllPopups} />
               <ConfirmDeletePopup isOpen={isConfirmDeletePopupOpen} onClose={closeAllPopups} onSubmit={handleConfirmDeleteSubmit} isSaving={isPopupSaving} />
-              <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} successful={true} />
-            </Route>
-            <Route path="/sign-up">
-              <Register />
-              <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} successful={false} />
-            </Route>
-            <Route path="/sign-in">
-              <Login />
-            </Route>
-          </Switch>
+            </>
+          } />
+          <Route path="/sign-up" component={Register} />
+          <Route path="/sign-in" component={Login} />
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+        <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} successful={isInfoTooltipSuccessful} />
       </div>
     </CurrentUserContext.Provider>
   );
