@@ -16,7 +16,9 @@ const popupConfig = {
 
 const apiConfig = {
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-25/',
-  authorization: 'd8d84bac-32d7-42f9-a622-bbe14f1aa9f5'
+  authorization: 'd8d84bac-32d7-42f9-a622-bbe14f1aa9f5',
+  appJSONType: 'application/json',
+  authBaseUrl: 'https://auth.nomoreparties.co/'
 };
 
 export {popupConfig, apiConfig};

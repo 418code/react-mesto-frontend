@@ -28,6 +28,12 @@ class Api {
       return Promise.reject(`Error: ${res.status}`);
     });
   }
+}
+
+class  DataApi extends Api {
+  constructor(options) {
+    super(options);
+  }
 
   /**
    * Gets user profile information
@@ -91,13 +97,36 @@ class Api {
   }
 }
 
-//prepare api object for use
-const api = new Api({
+class AuthApi extends Api{
+  constructor(options) {
+    super(options);
+  }
+
+  /**
+   * Creates a new user on the server
+   * @param {Object} object - {email, password}
+   * @returns {Promise}
+   */
+  register( {email, password} ) {
+    return this._fetchPath('signup', 'POST', {email: email, password: password});
+  }
+}
+
+//prepare api objects for use
+
+const api = new DataApi({
   baseUrl: apiConfig.baseUrl,
   headers: {
     authorization: apiConfig.authorization,
-    'Content-Type': 'application/json'
+    'Content-Type': apiConfig.appJSONType
   }
 });
 
-export default api;
+const authApi = new AuthApi({
+  baseUrl: apiConfig.authBaseUrl,
+  headers: {
+    'Content-Type': apiConfig.appJSONType
+  }
+});
+
+export { api, authApi };

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import api  from '../utils/api';
+import {api}  from '../utils/api';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -150,7 +150,9 @@ export default function App() {
               <ConfirmDeletePopup isOpen={isConfirmDeletePopupOpen} onClose={closeAllPopups} onSubmit={handleConfirmDeleteSubmit} isSaving={isPopupSaving} />
             </>
           } />
-          <Route path="/sign-up" component={Register} />
+          <Route path="/sign-up" render={ () =>
+              <Register openInfoTooltip={() => setIsInfoTooltipOpen(true)} setTooltipSuccess={(boolTF) => setIsInfoTooltipSuccessful(boolTF)} />
+          } />
           <Route path="/sign-in" component={Login} />
           <Route path="*">
             <Redirect to="/" />
