@@ -11,12 +11,12 @@ export default function InfoTooltip(props) {
 
           {props.successful ? (
             <>
-              <img src={successIcon} className="popup__confirm-icon" />
+              <img src={successIcon} className="popup__confirm-icon" alt="иконка успеха" />
               <p className="popup__confirm-text">Вы успешно зарегистрировались!</p>
             </>
           ) : (
             <>
-              <img src={failureIcon} className="popup__confirm-icon" />
+              <img src={failureIcon} className="popup__confirm-icon" alt="иконка ошибки" />
               <p className="popup__confirm-text">Что-то пошло не так! Попробуйте ещё раз.</p>
             </>
           )}

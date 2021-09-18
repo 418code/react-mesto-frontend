@@ -169,6 +169,20 @@ export default function App() {
     setupIsLoggedIn(false);
   };
 
+  const onRegister = (email, password) => {
+    authApi.register({email, password})
+    .then(res => {
+      setIsInfoTooltipSuccessful(true);
+      history.push('/sign-in');
+    })
+    .catch(err => {
+      setIsInfoTooltipSuccessful(false);
+    })
+    .finally(res => {
+      setIsInfoTooltipOpen(true);
+    });
+  };
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page body__element">
@@ -187,7 +201,7 @@ export default function App() {
             </>
           } />
           <Route path="/sign-up" render={ () =>
-              <Register openInfoTooltip={() => setIsInfoTooltipOpen(true)} setTooltipSuccess={(boolTF) => setIsInfoTooltipSuccessful(boolTF)} />
+              <Register onRegister={onRegister} />
           } />
           <Route path="/sign-in" render={() =>
               <Login onLogin={onLogin} />

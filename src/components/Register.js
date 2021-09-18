@@ -1,14 +1,12 @@
 import { popupConfig } from "../utils/utils";
 import PopupWithForm from "./PopupWithForm";
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { authApi } from "../utils/api";
+import { Link } from "react-router-dom";
 
 export default function Register(props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  let history = useHistory();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -18,21 +16,15 @@ export default function Register(props) {
     setPassword(e.target.value);
   };
 
+  const resetForm = () => {
+    setEmail('');
+    setPassword('');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    authApi.register({email, password})
-    .then(res => {
-      setEmail('');
-      setPassword('');
-      props.setTooltipSuccess(true);
-      history.push('/sign-in');
-    })
-    .catch(err => {
-      props.setTooltipSuccess(false);
-    })
-    .finally(res => {
-      props.openInfoTooltip();
-    });
+    props.onRegister(email, password);
+    resetForm();
   }
 
   return (
