@@ -19,11 +19,15 @@
 @import url(./blocks/page/__link/_size/page__link_size_small.css);
 @import url(./blocks/page/__link/_size/page__link_size_medium.css);
 @import url(./blocks/page/__link/_size/page__link_size_adaptive.css);
-@import url(./blocks/page/__link/_theme/page__link_theme_black-box.css);
+@import url(./blocks/page/__link/_color/page__link_color_white.css);
+@import url(./blocks/page/__link/_color/page__link_color_gray.css);
+
 
  /* header section */
 @import url(./blocks/header/header.css);
 @import url(./blocks/header/__logo/header__logo.css);
+@import url(./blocks/header/__text/header__text.css);
+@import url(./blocks/header/__container/header__container.css);
 
 /* main section */
 @import url(./blocks/content/content.css);

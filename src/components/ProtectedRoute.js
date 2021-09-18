@@ -4,7 +4,7 @@ import { useContext } from 'react';
 
 export default function ProtectedRoute(props) {
 
-  const {isLoggedIn} = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
 
   if (!isLoggedIn)
     return <Redirect to="/sign-in" />

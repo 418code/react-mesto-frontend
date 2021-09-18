@@ -2,8 +2,8 @@ import { apiConfig } from './utils';
 
 class Api {
   constructor(options) {
-    this.baseUrl = options.baseUrl;
-    this.headers = options.headers;
+    this._baseUrl = options.baseUrl;
+    this._headers = options.headers;
   }
 
   /**
@@ -16,12 +16,12 @@ class Api {
   _fetchPath(path, method, body = {}) {
     const fetchObject = {
       method: method,
-      headers: this.headers,
+      headers: this._headers,
     }
     if (method === 'POST' || method === 'PATCH')
       fetchObject['body'] = JSON.stringify(body);
 
-    return fetch(`${this.baseUrl}${path}`, fetchObject)
+    return fetch(`${this._baseUrl}${path}`, fetchObject)
     .then(res => {
       if (res.ok)
         return res.json();
@@ -31,9 +31,6 @@ class Api {
 }
 
 class  DataApi extends Api {
-  constructor(options) {
-    super(options);
-  }
 
   /**
    * Gets user profile information
@@ -97,9 +94,17 @@ class  DataApi extends Api {
   }
 }
 
-class AuthApi extends Api{
-  constructor(options) {
-    super(options);
+class AuthApi extends Api {
+
+  /**
+   * Creates authentication headers with a jwt token
+   * @param {String} token
+   */
+  _makeAuthHeaders(token) {
+    this._authHeaders = {
+      'Content-Type': apiConfig.appJSONType,
+      'Authorization' : `Bearer ${token}`
+    }
   }
 
   /**
@@ -109,6 +114,30 @@ class AuthApi extends Api{
    */
   register( {email, password} ) {
     return this._fetchPath('signup', 'POST', {email: email, password: password});
+  }
+
+  /**
+   * Signs in the user to the server
+   * @param {Object} object - {email, password}
+   * @returns {Promise}
+   */
+  signIn({ email, password }) {
+    return this._fetchPath('signin', 'POST', {email: email, password: password});
+  }
+
+  /**
+   * Tests the validity of jwt token
+   * @param {String} token
+   * @returns
+   */
+  checkToken(token) {
+    const prevHeaders = this._headers;
+    this._makeAuthHeaders(token);
+    this._headers = this._authHeaders;
+    const request = this._fetchPath('users/me', 'GET');
+    this._headers = prevHeaders;
+    this._makeAuthHeaders(''); //avoid storing the token in api object
+    return request;
   }
 }
 

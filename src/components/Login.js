@@ -1,13 +1,11 @@
 import { popupConfig } from "../utils/utils";
 import PopupWithForm from "./PopupWithForm";
-import { useState, useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { useState } from "react";
 
 export default function Register(props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const {setupIsLoggedIn} = useContext(AuthContext);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -17,8 +15,15 @@ export default function Register(props) {
     setPassword(e.target.value);
   };
 
+  const resetForm = () => {
+    setEmail('');
+    setPassword('');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    props.onLogin(email, password);
+    resetForm();
   }
 
   return (

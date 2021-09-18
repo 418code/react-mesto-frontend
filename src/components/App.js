@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import {api}  from '../utils/api';
+import { useEffect, useState, useContext } from 'react';
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
+import { api, authApi }  from '../utils/api';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -14,6 +14,7 @@ import Register from './Register';
 import Login from './Login';
 import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from './ProtectedRoute';
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function App() {
 
@@ -133,10 +134,45 @@ export default function App() {
     .finally(() => {setIsPopupSaving(false)});
   };
 
+  //auth logic
+
+  const history = useHistory();
+  const { setupIsLoggedIn } = useContext(AuthContext);
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    const mail = localStorage.getItem('email');
+    if (mail)
+      setEmail(mail);
+  }, [setEmail]);
+
+  const onLogin = (email, password) => {
+    authApi.signIn({ email, password })
+    .then(data => {
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('email', email);
+        setEmail(email);
+        setupIsLoggedIn(true);
+        history.push('/');
+      }
+    })
+    .catch(err => {
+      setIsInfoTooltipSuccessful(false);
+      setIsInfoTooltipOpen(true);
+    });
+  };
+
+  const onLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    setupIsLoggedIn(false);
+  };
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page body__element">
-        <Header />
+        <Header onLogout={onLogout} email={email} />
         <Switch>
           <ProtectedRoute exact path="/" render={() =>
             <>
@@ -153,7 +189,9 @@ export default function App() {
           <Route path="/sign-up" render={ () =>
               <Register openInfoTooltip={() => setIsInfoTooltipOpen(true)} setTooltipSuccess={(boolTF) => setIsInfoTooltipSuccessful(boolTF)} />
           } />
-          <Route path="/sign-in" component={Login} />
+          <Route path="/sign-in" render={() =>
+              <Login onLogin={onLogin} />
+          } />
           <Route path="*">
             <Redirect to="/" />
           </Route>
