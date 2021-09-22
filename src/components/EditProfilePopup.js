@@ -34,12 +34,12 @@ export default function EditProfilePopup(props) {
     <PopupWithForm name={popupConfig.profileEditPopupAndFormName} formTitle="Редактировать профиль" submitButtonText="Сохранить" isOpen={props.isOpen}
       onClose={props.onClose} onSubmit={handleSubmit} isSaving={props.isSaving} >
       <input id="popup__profile-name-input" type="text" name="profileName"
-        className="popup__form-text" placeholder="Жак-Ив Кусто" minLength="2" maxLength="40" required="required" value={name} onChange={handleNameChange}/>
-      <span className="popup__profile-name-input-error popup__form-text-error">Вы пропустили это поле.</span>
+        className="page__form-text" placeholder="Жак-Ив Кусто" minLength="2" maxLength="40" required="required" value={name} onChange={handleNameChange}/>
+      <span className="popup__profile-name-input-error page__form-text-error">Вы пропустили это поле.</span>
       <input id="popup__profile-description-input" type="text" name="profileDescription"
-        className="popup__form-text" placeholder="Исследователь океана" minLength="2" maxLength="200" required="required" value={description}
+        className="page__form-text" placeholder="Исследователь океана" minLength="2" maxLength="200" required="required" value={description}
         onChange={handleDescriptionChange} />
-      <span className="popup__profile-description-input-error popup__form-text-error">Вы пропустили это поле.</span>
+      <span className="popup__profile-description-input-error page__form-text-error">Вы пропустили это поле.</span>
     </PopupWithForm>
   );
 }

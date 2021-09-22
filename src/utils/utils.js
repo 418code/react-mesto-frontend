@@ -9,8 +9,9 @@ const popupConfig = {
   profileEditPopupAndFormName: 'edit-profile',
   cardConfirmDeletePopupAndFormName: 'confirm-delete',
   popupWithFormSavingText: 'Сохранение...',
-  registerScreenPopupAndFormName: 'register-form',
-  loginScreenPopupAndFormName: 'login-form',
+};
+
+const enterConfig = {
   containerThemeEntrance: 'black-box',
 };
 
@@ -21,4 +22,4 @@ const apiConfig = {
   authBaseUrl: 'https://auth.nomoreparties.co/'
 };
 
-export {popupConfig, apiConfig};
+export {popupConfig, enterConfig, apiConfig};

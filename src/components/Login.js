@@ -1,6 +1,5 @@
-import { popupConfig } from "../utils/utils";
-import PopupWithForm from "./PopupWithForm";
-import { useState } from "react";
+import EnterPageForm from './EnterPageForm';
+import { useState } from 'react';
 
 export default function Register(props) {
 
@@ -27,16 +26,15 @@ export default function Register(props) {
   }
 
   return (
-    <PopupWithForm name={popupConfig.loginScreenPopupAndFormName} formTitle="Вход" submitButtonText="Войти" isOpen={true}
-      onSubmit={handleSubmit} isSaving={false} theme={popupConfig.containerThemeEntrance}>
-      <input id="popup__login-email-input" type="email" name="loginEmail"
-        className="popup__form-text popup__form-text_theme_black-box" placeholder="Email" minLength="3" maxLength="254" required="required" value={email}
+    <EnterPageForm name="login-form" formTitle="Вход" submitButtonText="Войти" onSubmit={handleSubmit}>
+      <input id="enter__login-email-input" type="email" name="loginEmail"
+        className="page__form-text page__form-text_theme_black-box" placeholder="Email" minLength="3" maxLength="254" required="required" value={email}
         onChange={handleEmailChange}/>
-      <span className="popup__login-email-input-error popup__form-text-error">Вы пропустили это поле.</span>
-      <input id="popup__login-password-input" type="password" name="loginPassword"
-        className="popup__form-text popup__form-text_theme_black-box" placeholder="Пароль" minLength="8" maxLength="64" required="required" value={password}
+      <span className="enter__login-email-input-error page__form-text-error">Вы пропустили это поле.</span>
+      <input id="enter__login-password-input" type="password" name="loginPassword"
+        className="page__form-text page__form-text_theme_black-box" placeholder="Пароль" minLength="8" maxLength="64" required="required" value={password}
         onChange={handlePasswordChange} />
-      <span className="popup__login-password-input-error popup__form-text-error">Вы пропустили это поле.</span>
-    </PopupWithForm>
+      <span className="enter__login-password-input-error page__form-text-error">Вы пропустили это поле.</span>
+    </EnterPageForm>
   );
 }

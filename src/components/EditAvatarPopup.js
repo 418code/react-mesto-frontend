@@ -17,9 +17,9 @@ export default function EditAvatarPopup(props) {
   return (
     <PopupWithForm name={popupConfig.profileAvatarEditPopupAndFormName} formTitle="Обновить аватар" submitButtonText="Сохранить" isOpen={props.isOpen}
       onClose={props.onClose} onSubmit={handleSubmit} isSaving={props.isSaving} >
-      <input ref={inputRef} id="popup__profile-avatar-url-input" type="url" name="avatarUrl" className="popup__form-text" placeholder="Ссылка на аватар"
+      <input ref={inputRef} id="popup__profile-avatar-url-input" type="url" name="avatarUrl" className="page__form-text" placeholder="Ссылка на аватар"
        required="required" />
-      <span className="popup__profile-avatar-url-input-error popup__form-text-error">Введите адрес аватара.</span>
+      <span className="popup__profile-avatar-url-input-error page__form-text-error">Введите адрес аватара.</span>
     </PopupWithForm>
   );
 }
