@@ -188,7 +188,7 @@ export default function App() {
       <div className="page body__element">
         <Header onLogout={onLogout} email={email} />
         <Switch>
-          <ProtectedRoute exact path="/" render={() =>
+          <ProtectedRoute exact path="/" render={() => (
             <>
               <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick}
                 onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
@@ -199,13 +199,13 @@ export default function App() {
               <ImagePopup card={selectedCard} onClose={closeAllPopups} />
               <ConfirmDeletePopup isOpen={isConfirmDeletePopupOpen} onClose={closeAllPopups} onSubmit={handleConfirmDeleteSubmit} isSaving={isPopupSaving} />
             </>
-          } />
-          <Route path="/sign-up" render={ () =>
+          )} />
+          <Route path="/sign-up" render={ () => (
               <Register onRegister={onRegister} />
-          } />
-          <Route path="/sign-in" render={() =>
+          )} />
+          <Route path="/sign-in" render={() => (
               <Login onLogin={onLogin} />
-          } />
+          )} />
           <Route path="*">
             <Redirect to="/" />
           </Route>
