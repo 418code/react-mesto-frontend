@@ -45,6 +45,17 @@ export default function App() {
   };
 
   useEffect(() => {
+    const closePopupOnEsc = (evt) => {
+      if (evt.key === 'Escape')
+        closeAllPopups();
+    };
+
+    document.addEventListener('keydown', closePopupOnEsc);
+
+    return () => {document.removeEventListener('keydown', closePopupOnEsc)};
+  }, []);
+
+  useEffect(() => {
     //get api data on mount in parallel and put it in react state variables
     Promise.all([api.getUserInfo(), api.getInitialCards()])
     .then(([info, cards]) => {
