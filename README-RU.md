@@ -1,6 +1,7 @@
 # Проект Mesto React - Яндекс Практикум факультет веб разработки
 
 [Демо на github pages](https://bliss-code.github.io/react-mesto-auth)
+
 [English](./README.md)
 
 ## Описание
