@@ -13,7 +13,7 @@ Sprint 12
 
 JavaScript
 - user registration and authentication with password and email and confirm popup, jwt authentication, ProtectedRoute HOC
-- refactor [sprints 4-9](https://github.com/bliss-code/mesto/) objective JavaScript web app with React during [sprints 10-11](https://github.com/bliss-code/mesto-react)
+- refactor [sprints 4-9](https://github.com/web3flow/mesto/) objective JavaScript web app with React during [sprints 10-11](https://github.com/web3flow/mesto-react)
 - React: CRA, functional components, state/history/effect/context hooks, controlled components, refs, routes, redirects
 - Api objects for async calls to server
 - api use to create, delete, like a card, load cards, load and edit profile info and avatar, register, sign-in, and check jwt token
@@ -49,7 +49,7 @@ BEM
 - CSS classes organized according to Block Element Modifier system
 - files organized with BEM nested file structure
 - CSS files imported from BEM folders with @import
-- [DIY bash script for dealing with nested BEM file structure](https://github.com/bliss-code/instruments)
+- [DIY bash script for dealing with nested BEM file structure](https://github.com/web3flow/instruments)
 
 Git
 - gitflow workflow
