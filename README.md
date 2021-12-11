@@ -1,6 +1,6 @@
 # Project Mesto React (The Place) - Yandex Practicum web development program
 
-[Demo @ github pages](https://bliss-code.github.io/react-mesto-auth)
+[Demo @ github pages](https://web3flow.github.io/react-mesto-auth)
 
 [По-русски](./README-RU.md)
 
