@@ -33,6 +33,7 @@ export default function App() {
   //context state variables
   const [currentUser, setCurrentUser] = useState({name: '', about: '', avatar: '', _id: '', cohort: ''});
   const [cards, setCards] = useState([]);
+  const {isLoggedIn} = useContext(AuthContext);
 
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
@@ -57,13 +58,15 @@ export default function App() {
 
   useEffect(() => {
     //get api data on mount in parallel and put it in react state variables
+    if (isLoggedIn) {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
     .then(([info, cards]) => {
       setCurrentUser(info);
       setCards(cards);
     })
     .catch(err => {console.log(err)});
-  }, []);
+    }
+  }, [isLoggedIn]);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
