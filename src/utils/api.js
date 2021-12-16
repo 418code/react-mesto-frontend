@@ -4,6 +4,9 @@ class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
     this._headers = options.headers;
+    this._authHeaders = {};
+    Object.assign(this._authHeaders, this._headers);
+    this._authHeaders.Authorization = 'Bearer ';
   }
 
   /**
@@ -13,14 +16,13 @@ class Api {
    * @param {String} body - is added with some methods
    * @returns {Promise}
    */
-  _fetchPath(path, method, body = {}) {
+  _fetchPath(path, method, body = {}, auth = true) {
     const fetchObject = {
       method: method,
-      headers: this._headers,
+      headers: auth ? this._authHeaders : this._headers,
     }
     if (method === 'POST' || method === 'PATCH')
       fetchObject['body'] = JSON.stringify(body);
-
     return fetch(`${this._baseUrl}${path}`, fetchObject)
     .then(res => {
       if (res.ok)
@@ -28,9 +30,6 @@ class Api {
       return Promise.reject(`Error: ${res.status}`);
     });
   }
-}
-
-class  DataApi extends Api {
 
   /**
    * Gets user profile information
@@ -90,17 +89,14 @@ class  DataApi extends Api {
    * @returns {Promise}
    */
   changeLikeCardStatus(cardId, isLiked) {
-    return this._fetchPath(`cards/likes/${cardId}`, isLiked ? 'DELETE' : 'PUT');
+    return this._fetchPath(`cards/${cardId}/likes`, isLiked ? 'DELETE' : 'PUT');
   }
-}
-
-class AuthApi extends Api {
 
   /**
    * Creates authentication headers with a jwt token
    * @param {String} token
    */
-  _makeAuthHeaders(token) {
+  makeAuthHeaders(token) {
     this._authHeaders = {
       'Content-Type': apiConfig.appJSONType,
       'Authorization' : `Bearer ${token}`
@@ -113,7 +109,7 @@ class AuthApi extends Api {
    * @returns {Promise}
    */
   register( {email, password} ) {
-    return this._fetchPath('signup', 'POST', {email: email, password: password});
+    return this._fetchPath('signup', 'POST', {email: email, password: password}, false);
   }
 
   /**
@@ -122,7 +118,7 @@ class AuthApi extends Api {
    * @returns {Promise}
    */
   signIn({ email, password }) {
-    return this._fetchPath('signin', 'POST', {email: email, password: password});
+    return this._fetchPath('signin', 'POST', {email: email, password: password}, false);
   }
 
   /**
@@ -131,31 +127,19 @@ class AuthApi extends Api {
    * @returns
    */
   checkToken(token) {
-    const prevHeaders = this._headers;
-    this._makeAuthHeaders(token);
-    this._headers = this._authHeaders;
-    const request = this._fetchPath('users/me', 'GET');
-    this._headers = prevHeaders;
-    this._makeAuthHeaders(''); //avoid storing the token in api object
-    return request;
+    this.makeAuthHeaders(token);
+    return this._fetchPath('users/me', 'GET');
   }
 }
 
 //prepare api objects for use
 
-const api = new DataApi({
+const api = new Api({
   baseUrl: apiConfig.baseUrl,
   headers: {
-    authorization: apiConfig.authorization,
     'Content-Type': apiConfig.appJSONType
   }
 });
 
-const authApi = new AuthApi({
-  baseUrl: apiConfig.authBaseUrl,
-  headers: {
-    'Content-Type': apiConfig.appJSONType
-  }
-});
 
-export { api, authApi };
+export { api };

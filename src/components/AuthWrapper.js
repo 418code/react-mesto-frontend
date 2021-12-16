@@ -1,7 +1,7 @@
 import { AuthContext } from '../contexts/AuthContext';
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { authApi } from '../utils/api';
+import { api } from '../utils/api';
 
 export default function AuthWrapper({children}) {
 
@@ -12,7 +12,7 @@ export default function AuthWrapper({children}) {
   useEffect(() => {
     const jwt = localStorage.getItem('token');
     if (jwt) {
-      authApi.checkToken(jwt)
+      api.checkToken(jwt)
       .then(res => {
         localStorage.setItem('email', res.data.email);
         setIsLoggedIn(true);

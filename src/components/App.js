@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
-import { api, authApi }  from '../utils/api';
+import { api }  from '../utils/api';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -61,7 +61,7 @@ export default function App() {
     if (isLoggedIn) {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
     .then(([info, cards]) => {
-      setCurrentUser(info);
+      setCurrentUser(info.data);
       setCards(cards);
     })
     .catch(err => {console.log(err)});
@@ -103,7 +103,7 @@ export default function App() {
     setIsPopupSaving(true);
     api.setUserInfo({name, about})
     .then(info => {
-      setCurrentUser(info);
+      setCurrentUser(info.data);
       closeAllPopups();
     })
     .catch(err => {console.log(err)})
@@ -160,11 +160,12 @@ export default function App() {
   }, [setEmail]);
 
   const onLogin = (email, password) => {
-    authApi.signIn({ email, password })
+    api.signIn({ email, password })
     .then(data => {
       if (data.token) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('email', email);
+        api.makeAuthHeaders(data.token);
         setEmail(email);
         setupIsLoggedIn(true);
         history.push('/');
@@ -183,7 +184,7 @@ export default function App() {
   };
 
   const onRegister = (email, password) => {
-    authApi.register({email, password})
+    api.register({email, password})
     .then(res => {
       setIsInfoTooltipSuccessful(true);
       history.push('/sign-in');
