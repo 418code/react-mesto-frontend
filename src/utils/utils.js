@@ -16,7 +16,7 @@ const enterConfig = {
 };
 
 const apiConfig = {
-  baseUrl: 'http://localhost:3000/',
+  baseUrl: 'https://api.mesto.418co.de/',
   appJSONType: 'application/json'
 };
 

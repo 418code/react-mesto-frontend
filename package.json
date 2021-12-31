@@ -1,7 +1,6 @@
 {
   "name": "mesto-react",
   "version": "0.1.0",
-  "homepage": "https://bliss-code.github.io/react-mesto-auth/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
@@ -14,12 +13,12 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "scp -r ./build/* git@418co.de:/home/git/mesto-frontend"
   },
   "eslintConfig": {
     "extends": [
