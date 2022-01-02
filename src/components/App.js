@@ -62,7 +62,7 @@ export default function App() {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
     .then(([info, cards]) => {
       setCurrentUser(info.data);
-      setCards(cards);
+      setCards(cards.reverse());
     })
     .catch(err => {console.log(err)});
     }
