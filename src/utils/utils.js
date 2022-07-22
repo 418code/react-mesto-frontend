@@ -16,7 +16,7 @@ const enterConfig = {
 };
 
 const apiConfig = {
-  baseUrl: 'https://api.mesto.418co.de/',
+  baseUrl: (process.env.NODE_ENV === 'production') ? 'https://api.mesto.418co.de/' : 'http://localhost:3000/',
   appJSONType: 'application/json'
 };
 
