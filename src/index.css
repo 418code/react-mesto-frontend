@@ -40,6 +40,7 @@
 @import url(./blocks/page/__form-submit-btn/page__form-submit-btn.css);
 @import url(./blocks/page/__form-submit-btn/_theme/page__form-submit-btn_theme_black-box.css);
 @import url(./blocks/page/__form-submit-btn/_disabled/page__form-submit-btn_disabled.css);
+@import url(./blocks/page/__list/page__list.css);
 
 
 
@@ -103,6 +104,7 @@
 @import url(./blocks/popup/__photo-description/popup__photo-description.css);
 @import url(./blocks/popup/__confirm-text/popup__confirm-text.css);
 @import url(./blocks/popup/__confirm-icon/popup__confirm-icon.css);
+@import url(./blocks/popup/__select/popup__select.css);
 
 /* enter section */
 @import url(./blocks/enter/enter.css);

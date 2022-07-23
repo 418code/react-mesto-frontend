@@ -1,5 +1,7 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
+import { useIntl } from 'react-intl';
+import { Helmet } from 'react-helmet-async';
 import { api }  from '../utils/api';
 import Header from './Header';
 import Main from './Main';
@@ -14,7 +16,9 @@ import Register from './Register';
 import Login from './Login';
 import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from './ProtectedRoute';
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from '../contexts/AuthContext';
+import { LocaleContext } from '../contexts/LocaleContext';
+import { LOCALES } from '../i18n';
 
 export default function App() {
 
@@ -27,13 +31,19 @@ export default function App() {
   const [isPopupSaving, setIsPopupSaving] = useState(false);
   const [selectedCard, setSelectedCard] = useState(emptyCard);
   const [cardToDelete, setCardToDelete] = useState(emptyCard);
-  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
-  const [isInfoTooltipSuccessful, setIsInfoTooltipSuccessful] = useState(false);
 
   //context state variables
-  const [currentUser, setCurrentUser] = useState({name: '', about: '', avatar: '', _id: '', cohort: ''});
+  const blankCurrentUser = { _id: '', name: '', about: '', avatar: '', email: '', locale: LOCALES.ENGLISH };
+  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('currentUser')) || blankCurrentUser);
   const [cards, setCards] = useState([]);
   const {isLoggedIn} = useContext(AuthContext);
+
+  //locale
+  const {changeLocale} = useContext(LocaleContext);
+  const intl = useIntl();
+
+  const [infoTooltipContent, setInfoTooltipContent] = useState({success: false, message: 'blank'});
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
 
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
@@ -44,6 +54,18 @@ export default function App() {
     setCardToDelete(emptyCard);
     setIsInfoTooltipOpen(false);
   };
+
+  const showFailPopup = useCallback(() => {
+    setInfoTooltipContent({
+      message: intl.formatMessage({id: 'error_msg', defaultMessage: 'Произошла ошибка!'}),
+      success: false});
+  }, [intl]);
+
+  //update current user localStorage data
+  useEffect(() => {
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    changeLocale(currentUser.locale);
+  }, [currentUser, changeLocale, intl]);
 
   useEffect(() => {
     const closePopupOnEsc = (evt) => {
@@ -57,16 +79,23 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    //get api data on mount in parallel and put it in react state variables
+    //get api data on mount and put it in react state variables
     if (isLoggedIn) {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-    .then(([info, cards]) => {
-      setCurrentUser(info.data);
-      setCards(cards.reverse());
-    })
-    .catch(err => {console.log(err)});
+      api.getInitialCards()
+      .then((cards) => {
+        setCards(cards.reverse());
+      })
+      .catch(err => {
+        console.log(err);
+        showFailPopup();
+      });
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, showFailPopup]);
+
+  useEffect(() => {
+    if (infoTooltipContent.message !== 'blank')
+      setIsInfoTooltipOpen(true);
+  }, [infoTooltipContent]);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -99,14 +128,18 @@ export default function App() {
     setCardToDelete(card);
   }
 
-  const handleUserUpdate = ({name, about}) => {
+  const handleProfileUpdate = ({name, about, email, locale}) => {
     setIsPopupSaving(true);
-    api.setUserInfo({name, about})
-    .then(info => {
-      setCurrentUser(info.data);
+    api.setUserInfo({name, about, email, locale})
+    .then(user => {
+      setCurrentUser(user.data);
       closeAllPopups();
+      setInfoTooltipContent({success: true, message: intl.formatMessage({id: 'profile_success', defaultMessage: 'Профиль успешно обновлён!'})});
     })
-    .catch(err => {console.log(err)})
+    .catch(err => {
+      showFailPopup();
+      console.log(err)
+    })
     .finally(() => {setIsPopupSaving(false)});
   };
 
@@ -151,63 +184,59 @@ export default function App() {
 
   const history = useHistory();
   const { setupIsLoggedIn } = useContext(AuthContext);
-  const [email, setEmail] = useState('');
-
-  useEffect(() => {
-    const mail = localStorage.getItem('email');
-    if (mail)
-      setEmail(mail);
-  }, [setEmail]);
 
   const onLogin = (email, password) => {
     api.signIn({ email, password })
     .then(data => {
       if (data.token) {
         localStorage.setItem('token', data.token);
-        localStorage.setItem('email', email);
         api.makeAuthHeaders(data.token);
-        setEmail(email);
+        setCurrentUser(data.user);
         setupIsLoggedIn(true);
         history.push('/');
       }
     })
     .catch(err => {
-      setIsInfoTooltipSuccessful(false);
-      setIsInfoTooltipOpen(true);
+      showFailPopup();
     });
   };
 
   const onLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('email');
+    setCurrentUser(blankCurrentUser);
     setupIsLoggedIn(false);
+    localStorage.clear();
   };
 
   const onRegister = (email, password) => {
     api.register({email, password})
     .then(res => {
-      setIsInfoTooltipSuccessful(true);
+      setInfoTooltipContent({
+        message: intl.formatMessage({id: 'register_success_msg', defaultMessage: 'Вы успешно зарегистрировались!'}),
+        success: true});
       history.push('/sign-in');
     })
     .catch(err => {
-      setIsInfoTooltipSuccessful(false);
+      console.log(err);
+      showFailPopup();
     })
-    .finally(res => {
-      setIsInfoTooltipOpen(true);
-    });
   };
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    <CurrentUserContext.Provider value={{currentUser, setCurrentUser}}>
       <div className="page body__element">
-        <Header onLogout={onLogout} email={email} />
+        <Helmet>
+          <html lang={intl.formatMessage({id: 'lang', defaultMessage: 'ru'})} />
+          <title>{intl.formatMessage({id: 'app_title', defaultMessage: 'Место'})}</title>
+          <noscript>{intl.formatMessage({id: 'noscript', defaultMessage: 'Вам нужно включить Javascript, чтобы запустить это приложение.'})}</noscript>
+        </Helmet>
+        <Header onLogout={onLogout} />
         <Switch>
           <ProtectedRoute exact path="/" render={() => (
             <>
               <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick}
                 onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
               <Footer />
-              <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUserUpdate} isSaving={isPopupSaving} />
+              <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} handleProfileUpdate={handleProfileUpdate} isSaving={isPopupSaving} />
               <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} isSaving={isPopupSaving} />
               <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleAvatarUpdate} isSaving={isPopupSaving} />
               <ImagePopup card={selectedCard} onClose={closeAllPopups} />
@@ -224,7 +253,7 @@ export default function App() {
             <Redirect to="/" />
           </Route>
         </Switch>
-        <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} successful={isInfoTooltipSuccessful} />
+        <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} infoTooltipContent={infoTooltipContent} />
       </div>
     </CurrentUserContext.Provider>
   );

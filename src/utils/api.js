@@ -44,8 +44,8 @@ class Api {
    * @param {Object} object - {name, about}
    * @returns {Promise}
    */
-  setUserInfo({ name, about }) {
-    return this._fetchPath('users/me', 'PATCH', {name: name, about: about});
+  setUserInfo({ name, about, email, locale }) {
+    return this._fetchPath('users/me', 'PATCH', { name, about, email, locale });
   }
 
   /**

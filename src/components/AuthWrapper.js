@@ -14,7 +14,6 @@ export default function AuthWrapper({children}) {
     if (jwt) {
       api.checkToken(jwt)
       .then(res => {
-        localStorage.setItem('email', res.data.email);
         setIsLoggedIn(true);
       })
       .catch(err => {
