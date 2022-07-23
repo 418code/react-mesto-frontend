@@ -104,6 +104,11 @@ export default function App() {
       setIsImagePopupOpen(true);
   }, [imagePopupContent]);
 
+  useEffect(() => {
+    if (cardToDelete._id !== '' && cardToDelete.owner !== '')
+      setIsConfirmDeletePopupOpen(true);
+  }, [cardToDelete]);
+
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
   };
@@ -131,7 +136,6 @@ export default function App() {
   }
 
   function handleCardDelete(card) {
-    setIsConfirmDeletePopupOpen(true);
     setCardToDelete(card);
   }
 
