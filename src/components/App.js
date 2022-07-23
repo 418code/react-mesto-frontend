@@ -23,13 +23,14 @@ import { LOCALES } from '../i18n';
 export default function App() {
 
   const emptyCard = {link: '', name: '', likes: [], _id: '', createdAt: '', owner: ''};
+  const emptyImgPopup = {isOpened: false, card: emptyCard };
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] = useState(false);
   const [isPopupSaving, setIsPopupSaving] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(emptyCard);
+  const [imagePopup, setImagePopup] = useState(emptyImgPopup);
   const [cardToDelete, setCardToDelete] = useState(emptyCard);
 
   //context state variables
@@ -50,7 +51,7 @@ export default function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsConfirmDeletePopupOpen(false);
-    setSelectedCard(emptyCard);
+    setImagePopup(({card}) => ({isOpened: false, card}));
     setCardToDelete(emptyCard);
     setIsInfoTooltipOpen(false);
   };
@@ -111,7 +112,7 @@ export default function App() {
   };
 
   const handleCardClick = (card) => {
-    setSelectedCard(card);
+    setImagePopup({isOpened: true, card});
   };
 
   function handleCardLike(card) {
@@ -205,6 +206,7 @@ export default function App() {
   const onLogout = () => {
     setCurrentUser(blankCurrentUser);
     setupIsLoggedIn(false);
+    setImagePopup({isOpen: false, card: emptyCard});
     localStorage.clear();
   };
 
@@ -240,7 +242,7 @@ export default function App() {
               <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} handleProfileUpdate={handleProfileUpdate} isSaving={isPopupSaving} />
               <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} isSaving={isPopupSaving} />
               <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleAvatarUpdate} isSaving={isPopupSaving} />
-              <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+              <ImagePopup imagePopup={imagePopup} onClose={closeAllPopups} />
               <ConfirmDeletePopup isOpen={isConfirmDeletePopupOpen} onClose={closeAllPopups} onSubmit={handleConfirmDeleteSubmit} isSaving={isPopupSaving} />
             </>
           )} />
