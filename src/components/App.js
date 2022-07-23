@@ -199,6 +199,7 @@ export default function App() {
       }
     })
     .catch(err => {
+      console.log(err);
       showFailPopup();
     });
   };
@@ -216,7 +217,7 @@ export default function App() {
       setInfoTooltipContent({
         message: intl.formatMessage({id: 'register_success_msg', defaultMessage: 'Вы успешно зарегистрировались!'}),
         success: true});
-      history.push('/sign-in');
+      onLogin(email, password);
     })
     .catch(err => {
       console.log(err);
