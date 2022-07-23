@@ -87,7 +87,8 @@ export default function App() {
       })
       .catch(err => {
         console.log(err);
-        showFailPopup();
+        if (err.indexOf('404') === -1)
+          showFailPopup();
       });
     }
   }, [isLoggedIn, showFailPopup]);
