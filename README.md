@@ -1,8 +1,6 @@
-# Mesto React (The Place) - Yandex Practicum web development program
+# Mesto (The Place)
 
-## Description
-
-A multi-user photo sharing React/Node/Express/MongoDB web app
+##  A multi-user photo sharing React/Node/Express/MongoDB web app
 
 ## Front end
 
