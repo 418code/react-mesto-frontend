@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useCallback } from 'react';
+import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { Helmet } from 'react-helmet-async';
@@ -22,7 +22,7 @@ import { LOCALES } from '../i18n';
 
 export default function App() {
 
-  const emptyCard = {link: '', name: '', likes: [], _id: '', createdAt: '', owner: ''};
+  const emptyCard = useMemo(() => ({link: '', name: '', likes: [], _id: '', createdAt: '', owner: ''}), []);
   const emptyImagePopup = {card: emptyCard, key: 0};
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -47,7 +47,7 @@ export default function App() {
   const [infoTooltipContent, setInfoTooltipContent] = useState({success: false, message: 'blank'});
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
 
-  const closeAllPopups = () => {
+  const closeAllPopups = useCallback(() => {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
@@ -55,7 +55,7 @@ export default function App() {
     setIsImagePopupOpen(false);
     setCardToDelete(emptyCard);
     setIsInfoTooltipOpen(false);
-  };
+  }, [emptyCard]);
 
   const showFailPopup = useCallback(() => {
     setInfoTooltipContent({
@@ -78,7 +78,7 @@ export default function App() {
     document.addEventListener('keydown', closePopupOnEsc);
 
     return () => {document.removeEventListener('keydown', closePopupOnEsc)};
-  }, []);
+  }, [closeAllPopups]);
 
   useEffect(() => {
     //get api data on mount and put it in react state variables

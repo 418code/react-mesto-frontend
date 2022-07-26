@@ -6,7 +6,7 @@
   -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   width: 88%;
 }
 
