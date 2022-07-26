@@ -196,7 +196,7 @@ export default function App() {
   const history = useHistory();
   const { setupIsLoggedIn } = useContext(AuthContext);
 
-  const onLogin = (email, password) => {
+  const handleLogin = (email, password) => {
     api.signIn({ email, password })
     .then(data => {
       if (data.token) {
@@ -213,7 +213,7 @@ export default function App() {
     });
   };
 
-  const onLogout = () => {
+  const handleLogout = () => {
     setCurrentUser(blankCurrentUser);
     setupIsLoggedIn(false);
     closeAllPopups();
@@ -221,13 +221,13 @@ export default function App() {
     localStorage.clear();
   };
 
-  const onRegister = (email, password) => {
+  const handleRegister = (email, password) => {
     api.register({email, password})
     .then(res => {
       setInfoTooltipContent({
         message: intl.formatMessage({id: 'register_success_msg', defaultMessage: 'Вы успешно зарегистрировались!'}),
         success: true});
-      onLogin(email, password);
+      handleLogin(email, password);
     })
     .catch(err => {
       console.log(err);
@@ -243,7 +243,7 @@ export default function App() {
           <title>{intl.formatMessage({id: 'app_title', defaultMessage: 'Место'})}</title>
           <noscript>{intl.formatMessage({id: 'noscript', defaultMessage: 'Вам нужно включить Javascript, чтобы запустить это приложение.'})}</noscript>
         </Helmet>
-        <Header onLogout={onLogout} />
+        <Header handleLogout={handleLogout} />
         <Switch>
           <ProtectedRoute exact path="/" render={() => (
             <>
@@ -258,10 +258,10 @@ export default function App() {
             </>
           )} />
           <Route path="/sign-up" render={ () => (
-              <Register onRegister={onRegister} />
+              <Register handleRegister={handleRegister} />
           )} />
           <Route path="/sign-in" render={() => (
-              <Login onLogin={onLogin} />
+              <Login handleLogin={handleLogin} />
           )} />
           <Route path="*">
             <Redirect to="/" />

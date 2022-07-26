@@ -12,7 +12,7 @@ export default function Header(props) {
       <Switch>
         <Route exact path="/">
           <div className="header__container">
-            <Link to="sign-in" onClick={props.onLogout}
+            <Link to="sign-in" onClick={props.handleLogout}
               className="page__link page__link_size_adaptive page__link_color_gray transparent transparent_amount_more">
                 {intl.formatMessage({id: 'logout', defaultMessage: 'Выйти'})}
             </Link>
