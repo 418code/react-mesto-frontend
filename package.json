@@ -22,6 +22,7 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "scp -r ./build/* git@418co.de:/home/git/mesto-frontend",
+    "lint": "npx eslint .",
     "extract": "formatjs extract",
     "compile": "formatjs compile",
     "extract-compile": "formatjs extract 'src/**/*.js*' --out-file temp.json --flatten --id-interpolation-pattern '[sha512:contenthash:base64:6]' && formatjs compile 'temp.json' --out-file src/i18n/messages/ru.json && rm temp.json"
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@formatjs/cli": "^5.0.6",
-    "gh-pages": "^3.2.3"
+    "gh-pages": "^3.2.3",
+    "lint": "^0.7.0"
   }
 }
