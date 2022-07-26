@@ -25,7 +25,7 @@ export default function Header(props) {
         </Route>
         <Route path="/sign-in">
           <Link to="/sign-up" className="page__link page__link_size_adaptive page__link_color_white transparent transparent_amount_more">
-            {intl.formatMessage({id: 'register', defaultMessage: 'Регистрация'})}
+            {intl.formatMessage({id: 'registration', defaultMessage: 'Регистрация'})}
           </Link>
         </Route>
       </Switch>

@@ -4,6 +4,7 @@
   padding: 0 0 35px;
   text-align: center;
   color: #fff;
+  grid-row: 1;
 }
 
 @media (min-width: 530px) {

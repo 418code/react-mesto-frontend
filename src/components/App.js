@@ -168,8 +168,7 @@ export default function App() {
     .finally(() => {setIsPopupSaving(false)});
   };
 
-  const handleAddPlaceSubmit = (evt, {name, link}) => {
-    evt.preventDefault();
+  const handleAddPlaceSubmit = ({name, link}) => {
     setIsPopupSaving(true);
     api.addCard({name, link})
     .then(card => {

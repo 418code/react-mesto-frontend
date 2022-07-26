@@ -1,52 +1,39 @@
-import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import EnterPageForm from './EnterPageForm';
+import { useFormWithValidation } from './FormValidate';
 
 export default function Login(props) {
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
   const intl = useIntl();
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const resetForm = () => {
-    setEmail('');
-    setPassword('');
-  };
+  const { values, handleChange, errors, isValid } = useFormWithValidation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onLogin(email, password);
-    resetForm();
-  }
+    props.onLogin(values['email'], values['password']);
+  };
 
   return (
     <EnterPageForm name="login-form"
       formTitle={intl.formatMessage({id: 'login', defaultMessage: 'Вход'})}
-      submitButtonText={intl.formatMessage({id: 'to_login', defaultMessage: 'Войти'})}
       onSubmit={handleSubmit}>
-      <input id="enter__login-email-input" type="email" name="loginEmail"
-        className="page__form-text page__form-text_theme_black-box" placeholder="Email" minLength="3" maxLength="254" required="required" value={email}
-        onChange={handleEmailChange}/>
-      <span className="enter__login-email-input-error page__form-text-error">
-        {intl.formatMessage({id: 'missed_field_error', defaultMessage: 'Вы пропустили это поле.'})}
-      </span>
-      <input id="enter__login-password-input" type="password" name="loginPassword"
-        className="page__form-text page__form-text_theme_black-box"
-        placeholder={intl.formatMessage({id: 'password', defaultMessage: 'Пароль'})}
-        minLength="8" maxLength="64" required="required" value={password}
-        onChange={handlePasswordChange} />
-      <span className="enter__login-password-input-error page__form-text-error">
-        {intl.formatMessage({id: 'missed_field_error', defaultMessage: 'Вы пропустили это поле.'})}
-      </span>
+      <div className="enter__form-fields">
+        <input id="enter__login-email-input" type="email" name="email"
+          className="page__form-text page__form-text_theme_black-box" placeholder="Email"
+          minLength="3" maxLength="254" required="required" value={values['email'] || ''}
+          onChange={handleChange}/>
+        <span className={`page__form-text-error page__form-text-error_theme_black-box ${!isValid ? 'page__form-text-error_active' : ''}`}>{errors['email']}</span>
+        <input id="enter__login-password-input" type="password" name="password"
+          className="page__form-text page__form-text_theme_black-box"
+          placeholder={intl.formatMessage({id: 'password', defaultMessage: 'Пароль'})}
+          minLength="8" maxLength="64" required="required" value={values['password'] || ''}
+          onChange={handleChange} />
+        <span className={`page__form-text-error page__form-text-error_theme_black-box ${!isValid ? 'page__form-text-error_active' : ''}`}>{errors['password']}</span>
+      </div>
+      <button className={`page__form-submit-btn page__form-submit-btn_theme_black-box ${props.isSubmitDisabled ?
+        'page__form-submit-btn_disabled' : 'transparent transparent_amount_near-max'}`}
+        type="submit" disabled={!isValid}>
+        {intl.formatMessage({id: 'to_login', defaultMessage: 'Войти'})}
+      </button>
     </EnterPageForm>
   );
 }

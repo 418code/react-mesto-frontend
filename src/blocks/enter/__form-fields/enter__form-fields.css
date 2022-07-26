@@ -1,0 +1,14 @@
+.enter__form-fields {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  min-height: 260px;
+  grid-row: 2;
+}
+
+@media (min-width: 530px) {
+  .enter__form-fields {
+    min-height: 305px;
+  }
+}

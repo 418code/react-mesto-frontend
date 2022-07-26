@@ -1,11 +1,16 @@
 .page__form_theme_black-box {
-  width: 260px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 60px 1fr 49px 1fr;
+  min-width: 260px;
+  max-width: 358px;
+  height: 100%;
   padding: 0;
 }
 
-@media (min-width: 530px) {
+@media (min-width: 530px)
+{
   .page__form_theme_black-box {
-    width: 358px;
-    padding: 0;
+    grid-template-rows: 75px 1fr 52px 1fr;
   }
 }

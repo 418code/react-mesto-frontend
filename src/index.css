@@ -34,6 +34,7 @@
 @import url(./blocks/page/__form-text/_theme/page__form-text_theme_black-box.css);
 @import url(./blocks/page/__form-text/_type/page__form-text_type_error.css);
 @import url(./blocks/page/__form-text-error/page__form-text-error.css);
+@import url(./blocks/page/__form-text-error/_theme/page__form-text-error_theme_black-box.css);
 @import url(./blocks/page/__form-text-error/_active/page__form-text-error_active.css);
 @import url(./blocks/page/__form-bottom-text/page__form-bottom-text.css);
 @import url(./blocks/page/__form-bottom-text/_theme/page__form-bottom-text_theme_black-box.css);
@@ -108,6 +109,7 @@
 
 /* enter section */
 @import url(./blocks/enter/enter.css);
+@import url(./blocks/enter/__form-fields/enter__form-fields.css);
 @import url(./blocks/enter/__register-email-input-error/enter__register-email-input-error.css);
 @import url(./blocks/enter/__register-password-input-error/enter__register-password-input-error.css);
 @import url(./blocks/enter/__login-password-input-error/enter__login-password-input-error.css);

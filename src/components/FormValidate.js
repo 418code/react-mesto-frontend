@@ -1,22 +1,66 @@
 import { useState, useCallback } from 'react';
+import { useIntl } from 'react-intl';
 import isEmail from 'validator/es/lib/isEmail';
+import isURL from 'validator/es/lib/isURL';
 
 //custom hook for form mgmt && validation
 export function useFormWithValidation(startValid = false, startValues = {}) {
   const [values, setValues] = useState(startValues);
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(startValid);
+  const intl = useIntl();
+
+  // checks if there are regular errors
+  const checkNonCustom = (target) => {
+    for (let key in target.validity) {
+      if (key !== 'customError' && key !== 'valid') {
+        if (target.validity[key] === true)
+          return false;
+      }
+    }
+    return true;
+  };
 
   const handleChange = (event) => {
     const target = event.target;
     const name = target.name;
     const value = target.value;
-    if (name === 'email') {
-      if(!isEmail(value)) {
-        target.setCustomValidity('Wrong email address');
-      } else {
-        target.setCustomValidity('');
-      }
+    const type = target.type;
+
+    switch(type) {
+      case 'email':
+        target.setCustomValidity(isEmail(value)
+        ? ''
+        : intl.formatMessage({id: 'email_error', defaultMessage: 'Пожалуйста введите верный email адрес.'}));
+        break;
+      case 'url':
+        target.setCustomValidity(isURL(value, {require_protocol: true})
+        ? ''
+        : intl.formatMessage({id: 'url_error', defaultMessage: 'Пожалуйста введите верный адрес.'}));
+        break;
+      case 'password':
+        target.setCustomValidity(checkNonCustom(target)
+        ? ''
+        : intl.formatMessage({id: 'pwd_error', defaultMessage: 'Пожалуйста введите верный пароль.'}));
+        break;
+      default:
+        //none
+    }
+
+    switch(name) {
+      case 'name':
+        target.checkValidity();
+        target.setCustomValidity(checkNonCustom(target)
+        ? ''
+        : intl.formatMessage({id: 'name_error', defaultMessage: 'Пожалуйста введите верное имя.'}));
+        break;
+      case 'about':
+        target.setCustomValidity(checkNonCustom(target)
+        ? ''
+        : intl.formatMessage({id: 'desc_error', defaultMessage: 'Пожалуйста введите верное описание.'}));
+        break;
+      default:
+        //none
     }
 
     setValues({...values, [name]: value});
