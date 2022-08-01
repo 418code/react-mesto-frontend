@@ -1,4 +1,4 @@
-import { apiConfig } from './utils';
+import { apiConfig } from "./utils";
 
 class Api {
   constructor(options) {
@@ -6,7 +6,7 @@ class Api {
     this._headers = options.headers;
     this._authHeaders = {};
     Object.assign(this._authHeaders, this._headers);
-    this._authHeaders.Authorization = 'Bearer ';
+    this._authHeaders.Authorization = "Bearer ";
   }
 
   /**
@@ -20,13 +20,11 @@ class Api {
     const fetchObject = {
       method: method,
       headers: auth ? this._authHeaders : this._headers,
-    }
-    if (method === 'POST' || method === 'PATCH')
-      fetchObject['body'] = JSON.stringify(body);
-    return fetch(`${this._baseUrl}${path}`, fetchObject)
-    .then(res => {
-      if (res.ok)
-        return res.json();
+    };
+    if (method === "POST" || method === "PATCH")
+      fetchObject["body"] = JSON.stringify(body);
+    return fetch(`${this._baseUrl}${path}`, fetchObject).then((res) => {
+      if (res.ok) return res.json();
       return Promise.reject(`Error: ${res.status}`);
     });
   }
@@ -36,7 +34,7 @@ class Api {
    * @returns {Promise}
    */
   getUserInfo() {
-    return this._fetchPath('users/me', 'GET');
+    return this._fetchPath("users/me", "GET");
   }
 
   /**
@@ -45,7 +43,7 @@ class Api {
    * @returns {Promise}
    */
   setUserInfo({ name, about, email, locale }) {
-    return this._fetchPath('users/me', 'PATCH', { name, about, email, locale });
+    return this._fetchPath("users/me", "PATCH", { name, about, email, locale });
   }
 
   /**
@@ -54,7 +52,7 @@ class Api {
    * @returns {Promise}
    */
   setUserAvatar(url) {
-    return this._fetchPath('users/me/avatar', 'PATCH', {avatar: url});
+    return this._fetchPath("users/me/avatar", "PATCH", { avatar: url });
   }
 
   /**
@@ -62,7 +60,7 @@ class Api {
    * @returns {Promise}
    */
   getInitialCards() {
-    return this._fetchPath('cards', 'GET');
+    return this._fetchPath("cards", "GET");
   }
 
   /**
@@ -71,7 +69,7 @@ class Api {
    * @returns {Promise} - contains new card data
    */
   addCard({ name, link }) {
-    return this._fetchPath('cards', 'POST', {name: name, link: link});
+    return this._fetchPath("cards", "POST", { name: name, link: link });
   }
 
   /**
@@ -80,7 +78,7 @@ class Api {
    * @returns {Promise}
    */
   deleteCard(cardId) {
-    return this._fetchPath(`cards/${cardId}`, 'DELETE')
+    return this._fetchPath(`cards/${cardId}`, "DELETE");
   }
 
   /**
@@ -89,7 +87,7 @@ class Api {
    * @returns {Promise}
    */
   changeLikeCardStatus(cardId, isLiked) {
-    return this._fetchPath(`cards/${cardId}/likes`, isLiked ? 'DELETE' : 'PUT');
+    return this._fetchPath(`cards/${cardId}/likes`, isLiked ? "DELETE" : "PUT");
   }
 
   /**
@@ -98,9 +96,9 @@ class Api {
    */
   makeAuthHeaders(token) {
     this._authHeaders = {
-      'Content-Type': apiConfig.appJSONType,
-      'Authorization' : `Bearer ${token}`
-    }
+      "Content-Type": apiConfig.appJSONType,
+      Authorization: `Bearer ${token}`,
+    };
   }
 
   /**
@@ -108,8 +106,13 @@ class Api {
    * @param {Object} object - {email, password}
    * @returns {Promise}
    */
-  register( {email, password} ) {
-    return this._fetchPath('signup', 'POST', {email: email, password: password}, false);
+  register({ email, password }) {
+    return this._fetchPath(
+      "signup",
+      "POST",
+      { email: email, password: password },
+      false
+    );
   }
 
   /**
@@ -118,7 +121,12 @@ class Api {
    * @returns {Promise}
    */
   signIn({ email, password }) {
-    return this._fetchPath('signin', 'POST', {email: email, password: password}, false);
+    return this._fetchPath(
+      "signin",
+      "POST",
+      { email: email, password: password },
+      false
+    );
   }
 
   /**
@@ -128,7 +136,7 @@ class Api {
    */
   checkToken(token) {
     this.makeAuthHeaders(token);
-    return this._fetchPath('users/me', 'GET');
+    return this._fetchPath("users/me", "GET");
   }
 }
 
@@ -137,9 +145,8 @@ class Api {
 const api = new Api({
   baseUrl: apiConfig.baseUrl,
   headers: {
-    'Content-Type': apiConfig.appJSONType
-  }
+    "Content-Type": apiConfig.appJSONType,
+  },
 });
-
 
 export { api };
